@@ -5,6 +5,7 @@ const app = express()
 const morgan = require("morgan")
 app.use(express.json())
 app.use(cors())
+app.use(express.static('dist'))
 
 morgan.token("resBody", (request) => (request.method === 'POST')?JSON.stringify(request.body):'')
 
