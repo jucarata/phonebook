@@ -8,6 +8,8 @@ const Contact = require("./models/contacts")
 
 app.use(express.json())
 app.use(cors())
+app.use(express.static('dist'));
+
 
 morgan.token("resBody", (request) => (request.method === 'POST')?JSON.stringify(request.body):'')
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :resBody'))
@@ -32,13 +34,11 @@ const errorHandler = (error, request, response, next) => {
 
 app.get("/api/persons", (request, response) => {
     getAll().then(contactsReturned => {
-      //Each contact has database format {_id: {object}, _v: version
       contacts = contactsReturned
       response.json(contactsReturned)
     })
 })
 
-//Hasta el momento solo funciona si previamente se cargaron los contactos con el metodo get(api/contacts)
 app.get("/info", (request, response) => { 
     if(contacts.length === 0){
       getAll().then(contactsReturned => {
